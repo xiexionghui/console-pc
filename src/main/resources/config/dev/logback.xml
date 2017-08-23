@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+
+	<!-- 控制台 -->
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<Encoding>UTF-8</Encoding>
+		<Target>System.out</Target>
+		<encoder>
+			<pattern>[CONSOLE-PC] %d{MM/dd HH:mm:ss.SSS} [%-16thread] %-5level [%logger{10}.%-3line] %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 全部日志（每天一个） -->
+	<appender name="ALL_LOG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<Encoding>UTF-8</Encoding>
+		<encoder>
+			<pattern>[CONSOLE-PC] %d{MM/dd HH:mm:ss.SSS} [%-16thread] %-5level [%logger{10}.%-3line] %msg%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/hsdgold-console-pc/all.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+	</appender>
+
+	<!-- ERROR日志（每天一个） -->
+	<appender name="ERR_LOG"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.home}/logs/hsdgold-console-pc/err.log</file>
+		<Encoding>UTF-8</Encoding>
+		<encoder>
+			<pattern>[CONSOLE-PC] %d{MM/dd HH:mm:ss.SSS} [%-16thread] %-5level [%logger{10}.%-3line] %msg%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${catalina.home}/logs/hsdgold-console-pc/err.log.%d{yyyy-MM-dd}</fileNamePattern>
+			<maxHistory>30</maxHistory>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+	
+	<!-- <appender name="STASH-UDP" class="net.logstash.logback.appender.LogstashSocketAppender">
+        <host>192.168.254.233</host>
+        <port>5001</port>
+    </appender> -->
+    
+<!--     <appender name="STASH-REDIS" class="com.cwbase.logback.RedisAppender">
+	    项目节点（这里取节点名称，唯一）
+	    <source>consolepc1</source>
+	    类型（这里取大项目名称，以便为每个大项目建立索引文件）
+	    <type>console</type>
+	    标记（这里取dev/ci/test/prod环境标识）
+	    <tags>dev</tags>
+	    redis地址
+	    <host>192.168.254.210</host>
+	    redis端口
+	    <port>6379</port>
+	    redis键
+	    <key>logstash</key>
+	    <mdc>true</mdc>
+	    <location>true</location>
+	    <callerStackIndex>0</callerStackIndex>
+	</appender>
+ -->
+	<!-- 总开关 -->
+	<root level="DEBUG">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="ALL_LOG" />
+		<appender-ref ref="ERR_LOG" />
+		<!-- <appender-ref ref="STASH-UDP" /> -->
+	</root>
+	
+	<!-- 日志过滤 -->
+	<logger name="org.springframework" level="INFO" />
+	<logger name="org.springframework.remoting" level="ERROR" />
+	<logger name="org.springframework.remoting.caucho" level="INFO" />
+	<logger name="org.springframework.transaction" level="INFO" />
+	<logger name="org.springframework.jdbc" level="INFO" />
+	<logger name="org.apache.commons" level="INFO" />
+	<logger name="org.apache.activemq" level="INFO" />
+	<logger name="org.apache.axis" level="INFO" />
+	<logger name="org.apache.http" level="INFO" />
+	<logger name="org.mybatis" level="DEBUG" />
+	<logger name="httpclient.wire.content" level="ERROR" />
+	<logger name="httpclient.wire.header" level="ERROR" />
+	<logger name="com.mchange" level="INFO" />
+	<logger name="org.apache.zookeeper" level="INFO" />
+	<logger name="org.apache.zookeeper.ClientCnxn" level="ERROR" />
+	<logger name="com.alibaba.dubbo" level="INFO" />
+	<logger name="com.alibaba.dubbo.remoting.exchange.support.header.HeartBeatTask" level="ERROR" />
+	<logger name="com.alibaba.dubbo.monitor.dubbo.DubboMonitor" level="OFF" />
+	<logger name="com.mongodb" level="INFO" />
+	<logger name="org.mongodb" level="INFO" />
+</configuration>

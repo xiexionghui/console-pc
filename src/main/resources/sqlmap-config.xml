@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<mappers>
+		<!-- sys -->
+		<mapper resource="sqlmap-config/sys/sqlmap-sysmenu.xml"></mapper>
+		<mapper resource="sqlmap-config/sys/sqlmap-sysrole.xml"></mapper>
+		<mapper resource="sqlmap-config/sys/sqlmap-sysuser.xml"></mapper>
+		<mapper resource="sqlmap-config/sys/sqlmap-sysorgan.xml"></mapper>
+		<mapper resource="sqlmap-config/sys/sqlmap-follow-record.xml"></mapper>
+		<mapper resource="sqlmap-config/sys/sqlmap-sys-channel.xml"></mapper>
+
+		<!-- customer -->
+		<mapper resource="sqlmap-config/customer/sqlmap-customer.xml"></mapper>
+
+		<!-- pay -->
+		<mapper resource="sqlmap-config/pay/sqlmap-bank-card.xml"></mapper>
+		<mapper resource="sqlmap-config/pay/sqlmap-bank.xml"></mapper>
+		<mapper resource="sqlmap-config/pay/sqlmap-payment.xml"></mapper>
+		<mapper resource="sqlmap-config/pay/sqlmap-recharge.xml"></mapper>
+		<mapper resource="sqlmap-config/pay/sqlmap-transfer.xml"></mapper>
+		<mapper resource="sqlmap-config/pay/sqlmap-withdraw.xml"></mapper>
+		<mapper resource="sqlmap-config/pay/sqlmap-account.xml"></mapper>
+		<mapper resource="sqlmap-config/pay/sqlmap-account-mer.xml"></mapper>
+
+		<!-- gold -->
+		<mapper resource="sqlmap-config/gold/sqlmap-account.xml"></mapper>
+		<mapper resource="sqlmap-config/gold/sqlmap-buy.xml"></mapper>
+		<mapper resource="sqlmap-config/gold/sqlmap-hold.xml"></mapper>
+		<mapper resource="sqlmap-config/gold/sqlmap-income.xml"></mapper>
+		<mapper resource="sqlmap-config/gold/sqlmap-price.xml"></mapper>
+		<mapper resource="sqlmap-config/gold/sqlmap-product.xml"></mapper>
+		<mapper resource="sqlmap-config/gold/sqlmap-repay-report.xml"></mapper>
+		<mapper resource="sqlmap-config/gold/sqlmap-sell.xml"></mapper>
+		<mapper resource="sqlmap-config/gold/sqlmap-realtime.xml"></mapper>
+
+		<!-- statis -->
+		<mapper resource="sqlmap-config/statis/sqlmap-statis-customer.xml"></mapper>
+		<mapper resource="sqlmap-config/statis/sqlmap-statis-invest.xml"></mapper>
+		<mapper resource="sqlmap-config/statis/sqlmap-statis-current.xml"></mapper>
+		<mapper resource="sqlmap-config/statis/sqlmap-coupon-daily.xml"></mapper>
+		<mapper resource="sqlmap-config/statis/sqlmap-coupon-report.xml"></mapper>
+		<mapper resource="sqlmap-config/statis/sqlmap-statis-income.xml"></mapper>
+
+		<!-- bullion -->
+		<mapper resource="sqlmap-config/bullion/sqlmap-bullion_order.xml"></mapper>
+		<mapper resource="sqlmap-config/bullion/sqlmap-bullion_product.xml"></mapper>
+
+		<!-- risefall -->
+		<mapper resource="sqlmap-config/risefall/sqlmap-product.xml"></mapper>
+		<mapper resource="sqlmap-config/risefall/sqlmap-order.xml"></mapper>
+
+		<!-- audit -->
+		<mapper resource="sqlmap-config/audit/sqlmap-audit.xml"></mapper>
+		<mapper resource="sqlmap-config/audit/sqlmap-auditStep.xml"></mapper>
+		<mapper resource="sqlmap-config/audit/sqlmap-auditFlow.xml"></mapper>
+
+		<mapper resource="sqlmap-config/coupon/sqlmap-couponPlan.xml"></mapper>
+		<mapper resource="sqlmap-config/coupon/sqlmap-coupon.xml"></mapper>
+		<mapper resource="sqlmap-config/coupon/sqlmap-settlement.xml"></mapper>
+		<mapper resource="sqlmap-config/coupon/sqlmap-couponReward.xml"></mapper>
+        
+        <!-- recommend -->
+		<mapper resource="sqlmap-config/recommend/Recommend.xml"></mapper>
+		<mapper resource="sqlmap-config/recommend/RecommendAward.xml"></mapper>
+		<mapper resource="sqlmap-config/recommend/RecommendAwardDetail.xml"></mapper>
+        
+        <!-- channel -->
+        <mapper resource="sqlmap-config/channel/sqlmap-channel.xml"></mapper>
+	</mappers>
+
+</configuration>

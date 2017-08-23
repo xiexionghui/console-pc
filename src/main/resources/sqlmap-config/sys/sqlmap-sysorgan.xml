@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.heshidai.gold.console.module.sys.dao.OrganDAO">
+	
+    <!-- 用户信息字段 -->
+    <sql id="organFields">
+         a.`id`, a.`name`, a.`description`, a.`parentId`, a.`sort`,
+         date_format(a.createTime, '%Y-%m-%d %H:%i:%s') as createTime,
+         date_format(a.updateTime, '%Y-%m-%d %H:%i:%s') as updateTime
+    </sql>
+    
+    <!-- 根据父id查询组织机构  -->
+    <select id="findByParentId" resultType="com.heshidai.gold.console.module.sys.entity.SysOrgan">
+        select <include refid="organFields"/> 
+        from t_sys_organ a
+        where a.parentId=#{parentId}
+              and a.status=0
+    </select>
+    
+    <!-- 增加-->
+    <insert id="insert">
+        INSERT INTO `t_sys_organ` (`name`, `description`, `parentId`, `sort`, `createTime`, `updateTime`) 
+        VALUES (#{name}, #{description}, #{parentId}, #{sort}, now(), now());
+    </insert>
+    
+    <!-- 软删除 -->
+    <update id="deleteById">
+        update t_sys_organ
+        set status=-1
+        where id=#{id}
+    </update>
+    
+    <!-- 修改 -->
+    <update id="update">
+        update t_sys_organ
+        set name=#{name},
+            description=#{description},
+            parentId=#{parentId},
+            updateTime=now()
+        where id=#{id}
+    </update>
+    
+    <!-- 查询单条 -->
+    <select id="findById" resultType="com.heshidai.gold.console.module.sys.entity.SysOrgan">
+        select <include refid="organFields"/>,
+               case when b.id is not null then b.name
+                    else '一级部门' end parentName
+        from t_sys_organ a
+        left join t_sys_organ b on a.parentId=b.id
+        where a.id=#{id}
+    </select>
+    
+    <!-- 查询部门名称是否已存在 -->
+    <select id="getByNameAndParentId" resultType="com.heshidai.gold.console.module.sys.entity.SysOrgan">
+       select <include refid="organFields"/> 
+       from t_sys_organ a
+       where a.name=#{name}
+             and a.parentId=#{parentId}
+             and a.status=0
+          <if test="organId!=null and organId!=''">
+            and a.id!=#{organId}
+          </if>
+       limit 1
+    </select>
+    
+</mapper>

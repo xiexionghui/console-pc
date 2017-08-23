@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.heshidai.gold.console.module.sys.dao.UserDAO">
+	
+    <!-- 用户信息字段 -->
+    <sql id="userFields">
+        a.`id`, a.`organId`, a.`loginName`, a.`password`, a.`realName`, a.`customerId`,
+        case when a.`sex`=0 then '男'
+             when a.`sex`=1 then '女'
+             else '' end as sex,
+        a.`birthday`, a.`email`, a.`mobile`, a.`officeTel`, a.`homeTel`, 
+        case when a.`status`=0 then '正常'
+             when a.`status`=1 then '限制'
+             else '' end as `status`,
+        case when a.`dimissionStatus`=0 then '在职'
+             when a.`dimissionStatus`=1 then '离职'
+             else '' end as `dimissionStatus`,
+        date_format(a.`dimissionTime`, '%Y-%m-%d') as dimissionTime, 
+        a.`loginIp`, a.`loginTime`, 
+        date_format(a.`createTime`, '%Y-%m-%d %H:%i:%s') as createTime, 
+        date_format(a.`updateTime`, '%Y-%m-%d %H:%i:%s') as updateTime
+    </sql>
+    
+    <!-- 根据id查询用户信息 -->
+    <select id="findById" resultType="com.heshidai.gold.console.module.sys.entity.SysUser">
+        select <include refid="userFields" />,
+               b.id as organId,
+               b.name as organName
+        from t_sys_user a
+        left join t_sys_organ b on a.organId=b.id
+        where a.id=#{id}
+    </select>
+	
+	<!-- 根据用户名查询用户相关信息 -->
+	<select id="getByLoginName" resultType="com.heshidai.gold.console.module.sys.entity.ShiroUser">
+        select id, 
+               organId,
+		       realName, 
+		       loginName,
+		       MD5(MD5(CONCAT(password, lower(loginName)))) as password
+        from t_sys_user
+        WHERE status=0 and dimissionStatus=0
+              and loginName = #{loginName}
+	</select>
+	
+    <!-- 查询可用的用户信息数量 -->
+	<select id="findUserListCount" resultType="int">
+		   SELECT count(0)
+		   FROM t_sys_user a
+           <include refid="findList_where"/>
+	</select>
+    
+    <!-- 查询可用的用户信息列表 -->
+	<select id="findUserList" resultType="com.heshidai.gold.console.module.sys.entity.SysUser">
+		   SELECT <include refid="userFields" />,
+                  b.name as organName,
+                  c.mobilePhone
+		   FROM t_sys_user a
+		   LEFT JOIN t_sys_organ b on a.organId=b.id
+		   LEFT JOIN t_cst_customer c ON a.customerId = c.customerId
+           <include refid="findList_where"/>
+           order by a.createTime desc
+           limit #{start}, #{pagesize} 
+	</select>
+    
+    <!-- 查询可用的用户信息列表的查询条件 -->
+    <sql id="findList_where">
+      <where>
+          <if test="loginName!=null and loginName!=''">
+            and a.loginName like CONCAT('%',#{loginName},'%')
+          </if>
+          <if test="realName!=null and realName!=''">
+            and a.realName like CONCAT('%',#{realName},'%')
+          </if>
+      </where>
+    </sql>
+    
+    <!-- 添加数据 -->
+    <insert id="insert">
+       INSERT INTO `t_sys_user` (`organId`, `loginName`, `password`, `realName`, `mobile`, `sex`, `birthday`, `email`, `officeTel`, `homeTel`, `status`, `dimissionStatus`, `loginIp`, `loginTime`, `createTime`, `updateTime`) 
+                         VALUES (#{organId}, #{loginName}, #{password}, #{realName}, #{mobile}, #{sex}, #{birthday}, #{email}, #{officeTel}, #{homeTel}, #{status}, 0, #{loginIp}, #{loginTime}, now(), now());
+    </insert>
+    
+    <!-- 用户用户信息 -->
+    <update id="update">
+       update `t_sys_user` 
+       set organId=#{organId},
+           loginName=#{loginName},
+           realName=#{realName},
+           mobile=#{mobile},
+           sex=#{sex},
+           birthday=#{birthday},
+           email=#{email},
+           officeTel=#{officeTel},
+           homeTel=#{homeTel},
+           status=#{status},
+           dimissionStatus=#{dimissionStatus},
+           dimissionTime=#{dimissionTime},
+           <if test="password!=null and password!=''">
+               password=#{password},
+           </if>
+           updateTime=now()
+       where id=#{id}
+    </update>
+    
+    <!-- 设置用户状态 -->
+    <update id="updateStatusById">
+       update `t_sys_user` 
+       set status=#{status},
+           updateTime=now()
+       where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")" >
+           #{id}
+        </foreach>
+    </update>
+    
+    <!-- 查询原密码是否正确 -->
+    <select id="getUserByPassword" resultType="string">
+        select id
+        from t_sys_user
+        WHERE id=#{id}
+              and password = #{password}
+    </select>
+    
+    <!-- 修改密码 -->
+    <update id="updatePassword">
+       update `t_sys_user` 
+       set password=#{password},
+           updateTime=now()
+       where id=#{id}
+    </update>
+    
+    <!-- 查询登录用户名是否存在 -->
+    <select id="getSysUserByLoginName" resultType="com.heshidai.gold.console.module.sys.entity.SysUser">
+        select <include refid="userFields" />
+        from t_sys_user a 
+        where a.loginName=#{loginName}
+          <if test="userId!=null and userId!=''">
+            and a.id!=#{userId}
+          </if>
+    </select>
+    
+    <!-- 根据userId删除用户角色 -->
+    <delete id="deleteById">
+        delete from t_sys_user where id=#{id}
+    </delete>
+    
+    <!-- 关联平台账户 -->
+    <update id="updateRelation">
+       update `t_sys_user` 
+       set customerId=#{customerId},
+           updateTime = now()
+       where id=#{id}
+    </update>
+    
+</mapper>
+
+
+
+

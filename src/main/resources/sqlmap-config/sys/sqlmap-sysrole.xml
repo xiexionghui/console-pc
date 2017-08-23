@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.heshidai.gold.console.module.sys.dao.RoleDAO">
+
+    <sql id="sqlField">
+               a.id, 
+               a.name, 
+               a.description, 
+               date_format(a.createTime, '%Y-%m-%d %H:%i:%s') as createTime,
+               date_format(a.updateTime, '%Y-%m-%d %H:%i:%s') as updateTime
+    </sql>
+
+    <!-- 根据项目id查询对应的角色数量 -->
+    <select id="findCount" resultType="int">
+        select count(0)  
+        from t_sys_role
+        <include refid="findListWhere"/>
+    </select>
+
+    <!-- 根据项目id查询对应的角色集合 -->
+    <select id="findList" resultType="com.heshidai.gold.console.module.sys.entity.SysRole">
+        select <include refid="sqlField"/>
+        from t_sys_role a
+        <include refid="findListWhere"/>
+        order by a.id desc
+        limit #{start}, #{pagesize}
+    </select>
+    
+    <!-- 查询角色条件 -->
+    <sql id="findListWhere">
+        <where>
+            <if test="roleName!=null and roleName!=''">
+                and name like CONCAT('%',#{roleName},'%')
+            </if>
+        </where>
+    </sql>
+
+    <!-- 根据用户id查询用户对应角色 -->
+    <select id="findByUserId" resultType="com.heshidai.gold.console.module.sys.entity.SysRole">
+        select <include refid="sqlField"/>
+        from t_sys_role a
+        join t_sys_user_role b on a.id = b.roleId
+        where b.userId = #{userId}
+    </select>
+
+    <!-- 根据userId删除用户角色 -->
+    <delete id="deleteByUserId">
+        delete from t_sys_user_role where userId=#{userId}
+    </delete>
+    
+    <!-- 增加用户角色关系 -->
+    <insert id="insertUserRole">
+        insert into t_sys_user_role(`userId`, `roleId`) 
+        values 
+        <foreach collection="roleIds" item="roleId" separator=",">
+           (#{userId}, #{roleId})
+        </foreach>
+    </insert>
+    
+    <!-- 根据角色id查询角色 -->
+    <select id="findById" resultType="com.heshidai.gold.console.module.sys.entity.SysRole">
+        select <include refid="sqlField"/>
+        from t_sys_role a
+        where a.id=#{id}
+    </select>
+
+    <!-- 增加角色名 -->
+    <insert id="insert">
+       INSERT INTO `t_sys_role`(`name`, `description`, `createTime`, `updateTime`) 
+	   VALUES (#{name}, #{description}, now(), now());
+    </insert>
+    
+    <!-- 根据id修改角色 -->
+    <update id="update">
+        update t_sys_role
+        set name=#{name},
+		    description=#{description},
+            updateTime=now()
+        where id=#{id}
+    </update>
+    
+    <!-- 删除角色 -->
+    <delete id="deleteByRoleId">
+        delete from t_sys_role
+        where id=#{roleId}
+    </delete>
+    
+    <!-- 查询全部角色，并查询当前用户具备的角色 -->
+    <select id="findAllRoleByUserId" resultType="com.heshidai.gold.console.module.sys.entity.SysRole">
+        select a.id,
+               a.name,
+               case when b.userId is not null then '1'
+               else '0' end as 'flag'
+               from t_sys_role a
+               left join t_sys_user_role  b on a.id=b.roleId and b.userId=#{userId}
+    </select>
+    
+    <!-- 查询角色名称是否存在 -->
+    <select id="getByRoleName" resultType="com.heshidai.gold.console.module.sys.entity.SysRole">
+        select <include refid="sqlField"/>
+        from t_sys_role a 
+        where a.name=#{name}
+          <if test="roleId!=null and roleId!=''">
+            and a.id!=#{roleId}
+          </if>
+    </select>
+</mapper>
+

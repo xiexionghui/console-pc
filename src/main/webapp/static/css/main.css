@@ -1,0 +1,212 @@
+@charset "utf-8";
+/* CSS Document */
+body {
+	background: none repeat scroll 0 0 #FFF;
+	color: #333;
+	font-family: "宋体", Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	line-height: 22px;
+}
+
+div,form,input,select,p,table,h1,h2,h3,h4,h5,h6,ul,ol,li,th,td,dl,dt,dd,span
+	{
+	margin: 0;
+	padding: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: inherit;
+}
+
+h1,h2,h3,h4,h5,h6 {
+	font-size: 100%;
+	font-weight: bold;
+}
+
+ol,ul {
+	list-style: none;
+}
+
+a {
+	text-decoration: none;
+	color: #333;
+}
+
+a:hover {
+	text-decoration: underline;
+	color: #FF0000;
+}
+
+table {
+	margin: 0 auto;
+	border-collapse: separate;
+	border-spacing: 0;
+}
+
+/* th,td {
+	height: 28px;
+	line-height: 28px;
+} */
+
+img {
+	border: medium none;
+	margin: 0;
+	vertical-align: middle;
+}
+
+.fr {
+	float: right;
+}
+
+.fl {
+	float: left;
+}
+
+.clear {
+	clear: both;
+}
+
+.cl:after {
+	clear: both;
+	content: " ";
+	display: block;
+	height: 0;
+}
+
+.l-group {
+	border-bottom: 1px solid #EBEBEB;
+	clear: both;
+	color: #333333;
+	display: block;
+	font-size: 12px;
+	font-weight: bold;
+	height: 28px;
+	line-height: 28px;
+	margin: 0 0 10px;
+	/*padding-top: 5px;*/
+	position: relative;
+}
+
+.l-group-hasicon {
+	padding-left: 30px;
+}
+
+.l-group-top10 {
+	padding-top: 10px;
+}
+
+.l-group-hasicon img {
+	top: 6px;
+	left: 6px;
+	width: 16px;
+	height: 16px;
+	position: absolute;
+}
+
+.l-group-top10 img {
+	top: 16px;
+}
+
+.l-group span {
+	float: left;
+	width: 100px;
+}
+
+.l-group-cont {
+	clear: both;
+	color: #333333;
+	display: block;
+	font-size: 12px;
+	line-height: 28px;
+	margin-left: 10px;
+	position: relative;
+}
+
+.l-group-cont ul {
+	float: left;
+	width: 100%;
+}
+
+.l-group-cont ul li {
+	float: left;
+}
+
+.users {
+	height: 36px;
+}
+
+.users ul li {
+	padding-right: 35px;
+}
+
+.reports {
+	height: 148px;
+}
+
+.reports ul li {
+	width: 174px;
+}
+
+.reports ul li span,.products ul li span {
+	color: red;
+}
+
+.products {
+	height: 148px;
+}
+
+.minbox {
+	float: left;
+	width: 328px;
+}
+
+.bottom-line {
+	width: 305px;
+	padding-left: 15px;
+	border-bottom: 1px dashed #DFDFDF;
+	background: url('../images/dashed.png') no-repeat 0 10px scroll;
+}
+
+.hkgreen {
+	color: #008000;
+	font-style: normal;
+	font-weight: bold;
+}
+
+.red {
+	color: red;
+}
+.blue {
+	color: blue;
+}
+.tips{
+	margin-left:25px;
+}
+
+.l-page-tr2 {
+	background: #F5F5F5;
+}
+
+.l-page-tr2 td,.l-page-tr2 th {
+	background: #F5F5F5;
+}
+
+.aialog_box_title {
+		width: 100%;
+		height: auto;
+		border-width: 1px;
+		border-style: solid;
+		margin-left:2px;
+		padding:2px;
+		background-color: rgb(237, 244, 254);
+		border-color: rgb(0, 167, 233);
+		vertical-align: middle;
+	}
+	
+/*界面保存按钮*/
+.vertical-center-user-defined {
+  position: absolute;
+  margin-top:20px;
+  margin-bottom:50px;
+  left: 40%;
+}	

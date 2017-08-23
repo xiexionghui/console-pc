@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.heshidai.gold.console.module.sys.dao.ChannelDAO">
+	
+    <!-- 渠道全字段 -->
+    <sql id="allFields">
+         a.id, 
+         a.parentId, 
+         a.channelName, 
+         a.customerId, 
+         a.organId, 
+         a.remark, 
+         a.versionNo, 
+         date_format(a.createTime, '%Y-%m-%d %H:%i:%s') as createTime
+    </sql>
+    
+    <!-- 根据id查询信息 -->
+    <select id="findById" resultType="com.heshidai.gold.console.module.sys.entity.Channel">
+        select <include refid="allFields" />,
+               b.mobilePhone,
+               c.name as organName,
+               case when d.id is null then '一级渠道'
+                    else d.channelName end as parentName
+        from t_sys_channel a
+        left join t_cst_customer b on a.customerId=b.customerId
+        left join t_sys_organ c on a.organId=c.id
+        left join t_sys_channel d on a.parentId=d.id
+        where a.id=#{id}
+    </select>
+	
+    <!-- 根据父id查询渠道  -->
+    <select id="findByParentId" resultType="com.heshidai.gold.console.module.sys.entity.Channel">
+        select <include refid="allFields"/>,
+               b.mobilePhone,
+               c.name as organName
+        from t_sys_channel a
+        left join t_cst_customer b on a.customerId=b.customerId
+        left join t_sys_organ c on a.organId=c.id
+        where a.parentId=#{parentId}
+    </select>
+    
+    <!-- 查询部门名称是否已存在 -->
+    <select id="getByNameAndParentId" resultType="com.heshidai.gold.console.module.sys.entity.Channel">
+       select <include refid="allFields"/> 
+       from t_sys_channel a
+       where a.channelName=#{channelName}
+             and a.parentId=#{parentId}
+             <if test="channelId!=null and channelId!=''">
+                and a.id!=#{channelId}
+             </if>
+       limit 1
+    </select>
+    
+    <!-- 添加数据 -->
+    <insert id="insert">
+        insert into t_sys_channel(parentId, channelName, customerId, organId, remark, createTime)
+        values(#{parentId}, #{channelName}, #{customerId}, #{organId}, #{remark}, #{createTime})
+    </insert>
+    
+    <!-- 修改数据 -->
+    <update id="update">
+        update t_sys_channel
+        set parentId = #{parentId},
+            channelName = #{channelName},
+            customerId = #{customerId},
+            organId = #{organId},
+            remark = #{remark}
+        where id = #{id}
+    </update>
+    
+    <!-- 删除数据 -->
+    <delete id="deleteById">
+        delete from t_sys_channel where id=#{id}
+    </delete>
+    
+</mapper>

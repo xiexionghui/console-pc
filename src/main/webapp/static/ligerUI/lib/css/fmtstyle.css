@@ -1,0 +1,73 @@
+/* --------------------------
+AUTHOR : FMT
+URL : http://www.freemenutemplate.com
+Copyrights by FMT
+----------------------------*/
+*
+{
+    margin: 0;
+    padding: 0;
+}
+
+div.fmt
+{
+    margin: 0 auto;
+    width: 222px;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    padding-bottom: 10px;
+    background: url(../../images/bottom.gif) no-repeat right bottom;
+    color: #fff;
+}
+div.fmt div
+{
+    background: url(images/title.gif) repeat-x;
+    overflow: hidden;
+}
+div.fmt div:first-child
+{
+    background: url(toptitle.gif) no-repeat;
+}
+
+div.fmt div.collapsed
+{
+    height: 25px;
+}
+div.fmt div span
+{
+    display: block;
+    background: url(expanded.gif) no-repeat 10px center;
+    cursor: default;
+    border-bottom: 1px solid #ddd;
+}
+div.fmt div span a
+{
+    background: none;
+    color: #fff;
+    border: none;
+    padding-top: 0px;
+    text-decoration: none;
+    padding-bottom: 0px;
+}
+div.fmt div span a:hover
+{
+    background: none;
+    padding-top: 0px;
+}
+
+div.fmt div a
+{
+    padding: 5px 25px;
+    background: #deeadf;
+    display: block;
+    border-bottom: 1px solid #ddd;
+    color: #066;
+    cursor: pointer;
+}
+
+div.sdmenu div a:hover
+{
+    background: #066 url(linkarrow.gif) no-repeat right center;
+    color: #fff;
+    text-decoration: none;
+}

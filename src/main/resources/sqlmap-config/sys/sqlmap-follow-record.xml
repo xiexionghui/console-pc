@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.heshidai.gold.console.module.sys.dao.FollowRecordDAO">
+
+    <!-- 查询跟进记录数量 -->
+    <select id="findCount" resultType="int">
+        SELECT count(0)
+        FROM t_sys_follow_record a
+        join t_cst_customer      b on a.customerId=b.customerId
+        <include refid="findList_where"/>
+    </select>
+
+    <!-- 查询跟进记录列表 -->
+    <select id="findList" resultType="com.heshidai.gold.console.module.sys.entity.FollowRecord">
+        select 
+              a.id,
+              c.loginName,
+              date_format(a.followTime, '%Y-%m-%d %H:%i:%s') as followTime,
+              a.remark
+        from t_sys_follow_record a
+        join t_cst_customer      b on a.customerId=b.customerId
+        join t_sys_user          c on a.userId=c.id
+        <include refid="findList_where"/>
+        order by a.followTime desc
+        limit #{start}, #{pagesize}
+    </select>
+    
+    <!-- 查询条件 -->
+    <sql id="findList_where">
+      <where>
+          <if test="customerId!=null and customerId!=''">
+              and b.customerId = #{customerId}
+          </if>
+      </where>
+    </sql>
+
+    <!-- 新增跟进记录 -->
+    <insert id="insert" parameterType="com.heshidai.gold.console.module.sys.entity.FollowRecord">
+        insert into
+        t_sys_follow_record(customerId, userId, type, followTime,
+        nextVisitTime, remark, bizId, followStatus)
+        values (#{customerId}, #{userId}, #{type}, #{followTime}, #{nextVisitTime}, #{remark}, #{bizId}, #{followStatus})
+    </insert>
+    
+    <!-- 条件查询跟进记录是否存在 -->
+    <select id="getBybizIdAndType" resultType="String">
+        select id
+        from t_sys_follow_record
+        where bizId=#{bizId}
+              and type=#{type}
+    </select>
+    
+    <!-- 修改跟进记录 -->
+    <insert id="update" parameterType="com.heshidai.gold.console.module.sys.entity.FollowRecord">
+        update t_sys_follow_record
+        set remark=#{remark},
+            followStatus=#{followStatus}
+        where bizId=#{bizId}
+              and type=#{type}
+    </insert>
+    
+    <!-- 跟进主键查询数据 -->
+    <select id="findById" resultType="com.heshidai.gold.console.module.sys.entity.FollowRecord">
+        select a.`id`, 
+               a.`bizId`, 
+               a.`customerId`, 
+               a.`userId`, 
+               a.`type`, 
+                date_format(a.followTime, '%Y-%m-%d %H:%i:%s') as followTime,
+                date_format(a.nextVisitTime, '%Y-%m-%d %H:%i:%s') as nextVisitTime,
+               a.`remark`, 
+               a.`followStatus`,
+               b.loginName
+        from t_sys_follow_record a
+        left join t_sys_user b on a.userId = b.id
+        where a.id=#{id}
+    </select>
+
+
+</mapper>
+
+
+
+
